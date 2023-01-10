@@ -10,6 +10,6 @@ public with sharing class GetPlanetsWrapperClass {
 	public String population;
 	public String url;		
 	//public cls_residents[] residents;
-	/*class cls_residents {}*/
+	//*class cls_residents {}
 
 	}
