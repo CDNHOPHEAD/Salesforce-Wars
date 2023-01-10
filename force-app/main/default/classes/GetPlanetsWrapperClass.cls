@@ -8,10 +8,10 @@ public with sharing class GetPlanetsWrapperClass {
 	public String terrain;	//desert
 	public String surface_water;	//1
 	public String population;	//200000
-	public cls_residents[] residents;
-	public cls_films[] films;
+	//public cls_residents[] residents;
+	//public cls_films[] films;
 	public String url;	//https://swapi.dev/api/planets/1/
-	class cls_residents {
+	/*class cls_residents {
 		public String 0;	//h
 		public String 1;	//t
 		public String 2;	//t
@@ -43,8 +43,8 @@ public with sharing class GetPlanetsWrapperClass {
 		public String 28;	///
 		public String 29;	//1
 		public String 30;	///
-	}
-	class cls_films {
+	}*/
+	/*class cls_films {
 		public String 0;	//h
 		public String 1;	//t
 		public String 2;	//t
@@ -74,6 +74,5 @@ public with sharing class GetPlanetsWrapperClass {
 		public String 26;	//s
 		public String 27;	///
 		public String 28;	//1
-		public String 29;	///
+		public String 29;	///*/
 	}
-}
