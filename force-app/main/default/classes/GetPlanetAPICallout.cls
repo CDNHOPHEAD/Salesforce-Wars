@@ -22,7 +22,7 @@ public with sharing class GetPlanetAPICallout {
             System.debug('Callout error: '+ e);
         }
 
-            Star_Wars_Planet__c newPlanet = new Star_Wars_Planet__c ();
+        Star_Wars_Planet__c newPlanet = new Star_Wars_Planet__c ();
             newPlanet.Name               = planetResponse.name;
             newPlanet.Climate__c         = planetResponse.climate.capitalize();
             newPlanet.Diameter__c        = planetResponse.diameter;
