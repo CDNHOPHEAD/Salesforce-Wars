@@ -13,7 +13,7 @@
 public with sharing class GetPlanetAPICallout {
     @future (callout=true)
 /**************************************************************************************
-* @Description  Future method to get Star Wars "Planet" data from Open API
+* @Description  Future method to get Star Wars "Planet" data from Open API and then insert a new Star_Wars_Planet__c record with the related data
 * @Param		N/A
 * @Return       Void 
 * @Example     
@@ -27,6 +27,7 @@ public with sharing class GetPlanetAPICallout {
             req.setEndpoint('https://swapi.dev/api/planets/8');
             req.setHeader('Accept', 'application/json;charset=UTF-8');
 
+            //Instantiating the wrapper class for the JSON response from the Star Wars API
             GetPlanetsWrapperClass planetResponse = new GetPlanetsWrapperClass();
 
             try {
@@ -40,6 +41,7 @@ public with sharing class GetPlanetAPICallout {
                 System.debug('Callout error: '+ e);
             }
 
+            //Creating new Salesforce record with the data populated
             Star_Wars_Planet__c newPlanet = new Star_Wars_Planet__c ();
                 newPlanet.Name               = planetResponse.name;
                 newPlanet.Climate__c         = planetResponse.climate.capitalize();
@@ -51,7 +53,7 @@ public with sharing class GetPlanetAPICallout {
                 newPlanet.Terrain__c         = planetResponse.terrain.capitalize();
                 newPlanet.Surface_Water__c    = planetResponse.surface_water;
                 newPlanet.URL__c             = planetResponse.url;
-                insert newPlanet;
+            insert newPlanet;
 
         }
 

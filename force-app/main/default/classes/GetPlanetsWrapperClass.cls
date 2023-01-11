@@ -11,5 +11,4 @@ public with sharing class GetPlanetsWrapperClass {
 	public String url;		
 	//public cls_residents[] residents;
 	//*class cls_residents {}
-
 	}
