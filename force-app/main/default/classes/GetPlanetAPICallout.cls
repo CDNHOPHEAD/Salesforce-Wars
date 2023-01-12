@@ -20,11 +20,14 @@ public with sharing class GetPlanetAPICallout {
 **************************************************************************************/     
     public static void getPlanets(){
             
-            //Integer i = Integer.valueof((Math.random() * 82));
+            List<Star_Wars_Planet__c> planetList = new List<Star_Wars_Planet__c>();
+
+            for(Integer i = 1; i<=60;i++ ){
+
             Http http = new Http();
             HttpRequest req = new HttpRequest();
             req.setMethod('GET');
-            req.setEndpoint('https://swapi.dev/api/planets/8');
+            req.setEndpoint('https://swapi.dev/api/planets/'+i);
             req.setHeader('Accept', 'application/json;charset=UTF-8');
 
             //Instantiating the wrapper class for the JSON response from the Star Wars API
@@ -44,17 +47,18 @@ public with sharing class GetPlanetAPICallout {
             //Creating new Salesforce record with the data populated
             Star_Wars_Planet__c newPlanet = new Star_Wars_Planet__c ();
                 newPlanet.Name               = planetResponse.name;
-                newPlanet.Climate__c         = planetResponse.climate.capitalize();
+                newPlanet.Climate__c         = planetResponse.climate;
                 newPlanet.Diameter__c        = planetResponse.diameter;
                 newPlanet.Gravity__c         = planetResponse.gravity;
-                newPlanet.Orbital_Period__c  = double.valueOf(planetResponse.orbital_period);
-                newPlanet.Population__c      = double.valueOf(planetResponse.population);
-                newPlanet.Rotation_period__c = double.valueOf(planetResponse.surface_water);
-                newPlanet.Terrain__c         = planetResponse.terrain.capitalize();
+                newPlanet.Orbital_Period__c  = planetResponse.orbital_period;
+                newPlanet.Population__c      = planetResponse.population;
+                newPlanet.Rotation_period__c = planetResponse.surface_water;
+                newPlanet.Terrain__c         = planetResponse.terrain;
                 newPlanet.Surface_Water__c    = planetResponse.surface_water;
                 newPlanet.URL__c             = planetResponse.url;
-            insert newPlanet;
-
+            
+            planetList.add(newPlanet);
         }
-
+        insert planetList;
+    }
 }
