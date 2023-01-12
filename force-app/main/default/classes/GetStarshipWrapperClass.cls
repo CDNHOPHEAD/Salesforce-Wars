@@ -5,8 +5,8 @@ public with sharing class GetStarshipWrapperClass {
 	public String cost_in_credits;	
 	public String length;	
 	public String max_atmosphering_speed;	
-	public Double crew;		
-	public Double passengers;
+	public String crew;		
+	public String passengers;
     public String cargo_capacity;
     public String consumables;
     public String hyperdrive_rating;
