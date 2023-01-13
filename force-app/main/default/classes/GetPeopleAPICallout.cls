@@ -20,6 +20,11 @@ public with sharing class GetPeopleAPICallout {
    **************************************************************************************/
   @future(callout=true)
   public static void getPeople() {
+    List<Star_Wars_Planet__c> planetList = [
+      SELECT Id, URL__c
+      FROM Star_Wars_Planet__c
+      WHERE URL__c != NULL
+    ];
     List<Star_Wars_Person__c> peopleList = new List<Star_Wars_Person__c>();
     for (Integer i = 1; i <= 83; i++) {
       Http http = new Http();
@@ -43,20 +48,31 @@ public with sharing class GetPeopleAPICallout {
       } catch (System.CalloutException e) {
         System.debug('Callout error: ' + e);
       }
-      //Star_Wars_Planet__c homeworld = [SELECT Id FROM Star_Wars_Planet__c WHERE Url__c = :peopleResponse.homeworld LIMIT 1];
-
-      //Creating new Salesforce record with the data populated
+      
       Star_Wars_Person__c newPerson = new Star_Wars_Person__c();
-      newPerson.Name = peopleResponse.name;
-      newPerson.Birth_Year__c = peopleResponse.birth_year;
-      newPerson.Eye_Color__c = peopleResponse.eye_color;
-      newPerson.Gender__c = peopleResponse.gender;
-      newPerson.Hair_Color__c = peopleResponse.hair_color;
-      newPerson.Height_cm__c = peopleResponse.height;
-      //newPerson.Homeworld__c  = homeworld.Id;
-      newPerson.Mass_kg__c = peopleResponse.mass;
-      newPerson.URL__c = peopleResponse.url;
-      peopleList.add(newPerson);
+      if (peopleResponse.name == null) {
+        newPerson.Name = 'No Data in the API';
+        peopleList.add(newPerson);
+      }else{
+        //Creating new Salesforce record with the data populated
+        newPerson.Name = peopleResponse.name;
+        newPerson.Birth_Year__c = peopleResponse.birth_year;
+        newPerson.Eye_Color__c = peopleResponse.eye_color;
+        newPerson.Gender__c = peopleResponse.gender;
+        newPerson.Hair_Color__c = peopleResponse.hair_color;
+        newPerson.Height_cm__c = peopleResponse.height;
+        newPerson.Mass_kg__c = peopleResponse.mass;
+        newPerson.URL__c = peopleResponse.url;
+
+        for (Star_Wars_Planet__c homePlanet : planetList) {
+          if (homePlanet.URL__c == peopleResponse.homeworld) {
+            System.debug(homePlanet.Id);
+            newPerson.Homeworld__c = homePlanet.Id;
+          } 
+        }
+        peopleList.add(newPerson);
+
+      }
     }
     insert peopleList;
   }

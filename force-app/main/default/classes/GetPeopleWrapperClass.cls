@@ -8,5 +8,4 @@ public with sharing class GetPeopleWrapperClass {
 	public String mass;		
 	public String url;
     public String homeworld;	
-
 }
