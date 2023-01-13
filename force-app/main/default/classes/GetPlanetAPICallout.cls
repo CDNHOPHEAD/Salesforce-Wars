@@ -12,15 +12,14 @@
  *  2.0              Adam      01/12/2023         Created a for loop so that the method iterates through all the endpoints in the API and create a new record
  *******************************************************************************************/
 public with sharing class GetPlanetAPICallout {
-
   /**************************************************************************************
    * @Description  Future method to get Star Wars "Planet" data from Open API and then insert a new Star_Wars_Planet__c record with the related data
    * @Param		N/A
    * @Return       Void
    * @Example
    **************************************************************************************/
-   @future(callout=true)
-   public static void getPlanets() {
+  @future(callout=true)
+  public static void getPlanets() {
     List<Star_Wars_Planet__c> planetList = new List<Star_Wars_Planet__c>();
     for (Integer i = 1; i <= 60; i++) {
       Http http = new Http();
@@ -48,21 +47,26 @@ public with sharing class GetPlanetAPICallout {
         System.debug('Callout error: ' + e);
       }
 
-      //Creating new Salesforce record with the data populated
       Star_Wars_Planet__c newPlanet = new Star_Wars_Planet__c();
-      newPlanet.Name = planetResponse.name;
-      newPlanet.Climate__c = planetResponse.climate;
-      newPlanet.Diameter__c = planetResponse.diameter;
-      newPlanet.Gravity__c = planetResponse.gravity;
-      newPlanet.Orbital_Period__c = planetResponse.orbital_period;
-      newPlanet.Population__c = planetResponse.population;
-      newPlanet.Rotation_period__c = planetResponse.surface_water;
-      newPlanet.Terrain__c = planetResponse.terrain;
-      newPlanet.Surface_Water__c = planetResponse.surface_water;
-      newPlanet.URL__c = planetResponse.url;
+      if (planetResponse.name == null) {
+        newPlanet.Name = 'No Data in the API';
+        planetList.add(newPlanet);
+      } else {
+        //Creating new Salesforce record with the data populated
+        newPlanet.Name = planetResponse.name;
+        newPlanet.Climate__c = planetResponse.climate;
+        newPlanet.Diameter__c = planetResponse.diameter;
+        newPlanet.Gravity__c = planetResponse.gravity;
+        newPlanet.Orbital_Period__c = planetResponse.orbital_period;
+        newPlanet.Population__c = planetResponse.population;
+        newPlanet.Rotation_period__c = planetResponse.surface_water;
+        newPlanet.Terrain__c = planetResponse.terrain;
+        newPlanet.Surface_Water__c = planetResponse.surface_water;
+        newPlanet.URL__c = planetResponse.url;
 
-      planetList.add(newPlanet);
+        planetList.add(newPlanet);
+      }
+      insert planetList;
     }
-    insert planetList;
   }
 }
