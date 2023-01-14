@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Starships__c</fullName>
+    <externalId>false</externalId>
+    <label>Starships</label>
+    <referenceTo>Star_Wars_Person__c</referenceTo>
+    <relationshipLabel>Starships</relationshipLabel>
+    <relationshipName>Starship_Junction</relationshipName>
+    <relationshipOrder>1</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

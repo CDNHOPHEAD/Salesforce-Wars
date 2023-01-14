@@ -13,5 +13,5 @@ public with sharing class GetStarshipWrapperClass {
     public String MGLT;
     public String starship_class;
     public String url;
-    //public List<String> pilots;
+    public List<String> pilots;
 }
