@@ -9,6 +9,7 @@ public with sharing class GetPlanetsWrapperClass {
 	public String surface_water;	
 	public String population;
 	public String url;		
-	//public cls_residents[] residents;
-	//*class cls_residents {}
+	public List<String> residents;
+	public String created;
+	public String edited;
 	}

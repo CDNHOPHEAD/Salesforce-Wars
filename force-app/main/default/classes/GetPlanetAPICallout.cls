@@ -34,8 +34,8 @@ public with sharing class GetPlanetAPICallout {
       try {
         HttpResponse response = http.send(req);
         if (
-          response.getStatusCode() == 200 ||
-          response.getStatusCode() == 201
+          response.getStatusCode() >= 200 &&
+          response.getStatusCode() <= 300
         ) {
           System.debug(response.getBody());
           planetResponse = (GetPlanetsWrapperClass) (JSON.deserialize(
@@ -47,6 +47,8 @@ public with sharing class GetPlanetAPICallout {
         System.debug('Callout error: ' + e);
       }
 
+      System.debug(planetResponse.residents);
+
       Star_Wars_Planet__c newPlanet = new Star_Wars_Planet__c();
       if (planetResponse.name == null) {
         newPlanet.Name = 'No Data in the API';
@@ -55,18 +57,54 @@ public with sharing class GetPlanetAPICallout {
         //Creating new Salesforce record with the data populated
         newPlanet.Name = planetResponse.name;
         newPlanet.Climate__c = planetResponse.climate;
-        newPlanet.Diameter__c = planetResponse.diameter;
         newPlanet.Gravity__c = planetResponse.gravity;
-        newPlanet.Orbital_Period__c = planetResponse.orbital_period;
-        newPlanet.Population__c = planetResponse.population;
-        newPlanet.Rotation_period__c = planetResponse.surface_water;
         newPlanet.Terrain__c = planetResponse.terrain;
-        newPlanet.Surface_Water__c = planetResponse.surface_water;
         newPlanet.URL__c = planetResponse.url;
+        
+        String edited = planetResponse.edited.substringBefore('T')+' '+planetResponse.edited.substring(12, 19);
+        newPlanet.API_Data_Updated__c = Datetime.valueOf(edited);
+        System.debug(newPlanet.API_Data_Updated__c);
+        
+        String created = planetResponse.created.substringBefore('T')+' '+planetResponse.created.substring(12, 19);
+        newPlanet.API_Data_Created__c = Datetime.valueOf(created);
+        
+        String rotationPeriod = planetResponse.rotation_period;
+        if(rotationPeriod.isNumeric() && rotationPeriod !=null){
+          newPlanet.Rotation_period__c = Integer.valueOf(rotationPeriod);
+        }else{
+          newPlanet.Rotation_period__c = null;
+        }
 
+        String orbitalPeriod = planetResponse.orbital_period;
+        if(orbitalPeriod.isNumeric() && orbitalPeriod !=null){
+          newPlanet.Orbital_Period__c = Integer.valueOf(orbitalPeriod);
+        }else{
+          newPlanet.Orbital_Period__c = null;
+        }
+        
+        String diameter = planetResponse.diameter;
+        if(diameter.isNumeric() && diameter !=null){
+          newPlanet.Diameter__c = Integer.valueOf(diameter);
+        }else{
+          newPlanet.Diameter__c = null;
+        }
+
+        String surfaceWater = planetResponse.surface_water;
+        if(surfaceWater.isNumeric() && surfaceWater !=null){
+          newPlanet.Surface_Water__c = Integer.valueOf(surfaceWater);
+        }else{
+          newPlanet.Surface_Water__c = null;
+        }
+
+        String population = planetResponse.population;
+        if(population.isNumeric() && population !=null){
+          newPlanet.Population__c = long.valueOf(population);
+        }else{
+          newPlanet.Population__c = null;
+        }
         planetList.add(newPlanet);
       }
-      insert planetList;
     }
+    insert planetList;
   }
 }

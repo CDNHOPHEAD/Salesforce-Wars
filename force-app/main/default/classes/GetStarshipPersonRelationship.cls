@@ -26,11 +26,11 @@ public with sharing class GetStarshipPersonRelationship {
     List<Star_Wars_Starship__c> starshipList = [SELECT Id,Name,URL__c FROM Star_Wars_Starship__c];
     Map<Id ,Star_Wars_Starship__c> starshipMap = new Map<Id, Star_Wars_Starship__c>(starshipList);
     //Create map of people with URL as the key
-      for (Integer i = 2; i <= 29; i++) {
+      //for (Integer i = 2; i <= 29; i++) {
         Http http = new Http();
         HttpRequest req = new HttpRequest();
         req.setMethod('GET');
-        req.setEndpoint('https://swapi.dev/api/starships/' + i);
+        req.setEndpoint('https://swapi.dev/api/starships/10');
         req.setHeader('Accept', 'application/json;charset=UTF-8');
   
         //Instantiating the wrapper class for the JSON response from the Star Wars API
@@ -52,19 +52,25 @@ public with sharing class GetStarshipPersonRelationship {
           System.debug('Callout error: ' + e);
         }
         
+        if(starshipResponse.name != null){
+
         List<String> pilotURLS = starshipResponse.pilots;
         Id starshipId = [SELECT Id From Star_Wars_Starship__c WHERE URL__c = :starshipResponse.url LIMIT 1].Id; 
-        List<Star_Wars_Person__c> pilotList = [SELECT Id, URL__c FROM Star_Wars_Person__c WHERE URL__c IN :pilotURLS];
+        List<Star_Wars_Person__c> pilotList = [SELECT Id,Name, URL__c FROM Star_Wars_Person__c WHERE URL__c IN :pilotURLS];
 
         for(Star_Wars_Person__c pilot: pilotList){
             Starship_Person_Junction__c newJunction = new Starship_Person_Junction__c();
+            newJunction.Name = pilot.Name+' Starship relationship';
             newJunction.Pilots__c = pilot.Id;
             newJunction.Starships__c = starshipId;
+            System.debug(newJunction);
             junctionList.add(newJunction);
         }
 
       }
       insert junctionList;
     }
-  }
+    
+    }
+ // }
   
