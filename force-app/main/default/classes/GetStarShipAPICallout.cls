@@ -46,9 +46,14 @@ public with sharing class GetStarShipAPICallout {
       } catch (System.CalloutException e) {
         System.debug('Callout error: ' + e);
       }
+
+      Star_Wars_Starship__c newStarship = new Star_Wars_Starship__c();
+      if (starshipResponse.name == null) {
+        newStarship.Name = 'No Data in the API';
+        starshipList.add(newStarship);
+      }else{
       System.debug(starshipResponse.pilots);
       //Creating new Salesforce record with the Starship data populated
-      Star_Wars_Starship__c newStarship = new Star_Wars_Starship__c();
       newStarship.Name = starshipResponse.name;
       newStarship.Consumables__c = starshipResponse.consumables;
       newStarship.Manufacturer__c = starshipResponse.manufacturer;
@@ -126,6 +131,7 @@ public with sharing class GetStarShipAPICallout {
 
       starshipList.add(newStarship);
     }
+  }
     insert starshipList;
   }
 }
