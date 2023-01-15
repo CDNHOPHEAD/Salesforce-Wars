@@ -61,8 +61,27 @@ public with sharing class GetPeopleAPICallout {
         newPerson.Gender__c = peopleResponse.gender;
         newPerson.Hair_Color__c = peopleResponse.hair_color;
         newPerson.Height_cm__c = peopleResponse.height;
-        newPerson.Mass_kg__c = peopleResponse.mass;
         newPerson.URL__c = peopleResponse.url;
+        
+        String mass = peopleResponse.mass;
+        if(mass.isNumeric() && mass !=null){
+          newPerson.Mass_kg__c = Integer.valueOf(mass);
+        }else{
+          newPerson.Mass_kg__c = null;
+        }
+
+        String height = peopleResponse.height;
+        if(height.isNumeric() && height !=null){
+          newPerson.Height_cm__c = Integer.valueOf(height);
+        }else{
+          newPerson.Height_cm__c = null;
+        }
+
+        String edited = peopleResponse.edited.substringBefore('T')+' '+peopleResponse.edited.substring(12, 19);
+        newPerson.API_Data_Updated__c = Datetime.valueOf(edited);
+        
+        String created = peopleResponse.created.substringBefore('T')+' '+peopleResponse.created.substring(12, 19);
+        newPerson.API_Data_Created__c = Datetime.valueOf(created);
 
         for (Star_Wars_Planet__c homePlanet : planetList) {
           if (homePlanet.URL__c == peopleResponse.homeworld) {

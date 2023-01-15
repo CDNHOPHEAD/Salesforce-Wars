@@ -46,22 +46,84 @@ public with sharing class GetStarShipAPICallout {
       } catch (System.CalloutException e) {
         System.debug('Callout error: ' + e);
       }
-
+      System.debug(starshipResponse.pilots);
       //Creating new Salesforce record with the Starship data populated
       Star_Wars_Starship__c newStarship = new Star_Wars_Starship__c();
       newStarship.Name = starshipResponse.name;
-      newStarship.Cargo_Capacity__c = starshipResponse.cargo_capacity;
       newStarship.Consumables__c = starshipResponse.consumables;
-      newStarship.Crew__c = starshipResponse.crew;
-      newStarship.Hyperdrive_Rating__c = starshipResponse.hyperdrive_rating;
-      newStarship.Length__c = starshipResponse.length;
       newStarship.Manufacturer__c = starshipResponse.manufacturer;
-      newStarship.Max_Atmosphering_Speed__c = starshipResponse.max_atmosphering_speed;
       newStarship.Model__c = starshipResponse.model;
-      newStarship.Passengers__c = starshipResponse.passengers;
-      //newStarship.Pilots__c = starshipResponse
       newStarship.Starship_Class__c = starshipResponse.starship_class;
       newStarship.URL__c = starshipResponse.url;
+
+      String cost = starshipResponse.cost_in_credits;
+      if (cost.isNumeric() && cost != null) {
+        newStarship.Cost_In_Credits__c = Integer.valueOf(cost);
+      } else {
+        newStarship.Cost_In_Credits__c = null;
+      }
+
+      String cargo = starshipResponse.cargo_capacity;
+      if (cargo.isNumeric() && cargo != null) {
+        newStarship.Cargo_Capacity__c = Integer.valueOf(cargo);
+      } else {
+        newStarship.Cargo_Capacity__c = null;
+      }
+
+      String crew = starshipResponse.crew;
+      if (crew.isNumeric() && crew != null) {
+        newStarship.Crew__c = Integer.valueOf(crew);
+      } else {
+        newStarship.Crew__c = null;
+      }
+
+      String hyperdrive = starshipResponse.hyperdrive_rating;
+      if (hyperdrive.isNumeric() && hyperdrive != null) {
+        newStarship.Hyperdrive_Rating__c = Double.valueOf(hyperdrive);
+      } else {
+        newStarship.Hyperdrive_Rating__c = null;
+      }
+
+      String mglt = starshipResponse.MGLT;
+      if (mglt.isNumeric() && mglt != null) {
+        newStarship.MGLT__c = Integer.valueOf(mglt);
+      } else {
+        newStarship.MGLT__c = null;
+      }
+
+      String length = starshipResponse.length;
+      if (length.isNumeric() && length != null) {
+        newStarship.Length__c = Double.valueOf(length);
+      } else {
+        newStarship.Length__c = null;
+      }
+
+      String passengers = starshipResponse.passengers;
+      if (passengers.isNumeric() && passengers != null) {
+        newStarship.Passengers__c = Integer.valueOf(passengers);
+      } else {
+        newStarship.Passengers__c = null;
+      }
+
+      String speed = starshipResponse.max_atmosphering_speed;
+      if (speed.isNumeric() && speed != null) {
+        newStarship.Max_Atmosphering_Speed__c = Integer.valueOf(speed);
+      } else {
+        newStarship.Max_Atmosphering_Speed__c = null;
+      }
+
+      String edited =
+        starshipResponse.edited.substringBefore('T') +
+        ' ' +
+        starshipResponse.edited.substring(12, 19);
+      newStarship.API_Data_Updated__c = Datetime.valueOf(edited);
+
+      String created =
+        starshipResponse.created.substringBefore('T') +
+        ' ' +
+        starshipResponse.created.substring(12, 19);
+      newStarship.API_Data_Created__c = Datetime.valueOf(created);
+
       starshipList.add(newStarship);
     }
     insert starshipList;
