@@ -60,7 +60,6 @@ public with sharing class GetPeopleAPICallout {
         newPerson.Eye_Color__c = peopleResponse.eye_color;
         newPerson.Gender__c = peopleResponse.gender;
         newPerson.Hair_Color__c = peopleResponse.hair_color;
-        newPerson.Height_cm__c = peopleResponse.height;
         newPerson.URL__c = peopleResponse.url;
         
         String mass = peopleResponse.mass;

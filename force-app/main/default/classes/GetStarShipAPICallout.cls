@@ -63,14 +63,14 @@ public with sharing class GetStarShipAPICallout {
 
       String cost = starshipResponse.cost_in_credits;
       if (cost.isNumeric() && cost != null) {
-        newStarship.Cost_In_Credits__c = Integer.valueOf(cost);
+        newStarship.Cost_In_Credits__c = Long.valueOf(cost);
       } else {
         newStarship.Cost_In_Credits__c = null;
       }
 
       String cargo = starshipResponse.cargo_capacity;
       if (cargo.isNumeric() && cargo != null) {
-        newStarship.Cargo_Capacity__c = Integer.valueOf(cargo);
+        newStarship.Cargo_Capacity__c = Long.valueOf(cargo);
       } else {
         newStarship.Cargo_Capacity__c = null;
       }
@@ -84,7 +84,7 @@ public with sharing class GetStarShipAPICallout {
 
       String hyperdrive = starshipResponse.hyperdrive_rating;
       if (hyperdrive.isNumeric() && hyperdrive != null) {
-        newStarship.Hyperdrive_Rating__c = Double.valueOf(hyperdrive);
+        newStarship.Hyperdrive_Rating__c = Decimal.valueOf(hyperdrive);
       } else {
         newStarship.Hyperdrive_Rating__c = null;
       }
@@ -98,7 +98,7 @@ public with sharing class GetStarShipAPICallout {
 
       String length = starshipResponse.length;
       if (length.isNumeric() && length != null) {
-        newStarship.Length__c = Double.valueOf(length);
+        newStarship.Length__c = Decimal.valueOf(length);
       } else {
         newStarship.Length__c = null;
       }
