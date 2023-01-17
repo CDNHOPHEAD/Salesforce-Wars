@@ -2,6 +2,8 @@ public class  StarWarsAPIFlow {
     @InvocableMethod(label='Get Star Wars Records' description='HTTP request to SWAPI.com' category='StarWars')
     public static void StarWarsAPIFlow(List<FlowInputs> request){
       List<Star_Wars_Person__c> peopleList = new List<Star_Wars_Person__c>();
+      List<Star_Wars_Starship__c> starshipInsert = new List<Star_Wars_Starship__c>();
+      
       String planetURL = request[0].planetURL;
       Http http = new Http();
       HttpRequest req = new HttpRequest();
@@ -10,7 +12,6 @@ public class  StarWarsAPIFlow {
       System.debug('request: '+request);
       req.setHeader('Accept', 'application/json;charset=UTF-8');
         
-      
       //Instantiating the wrapper class for the JSON response from the Star Wars API
       GetPlanetsWrapperClass planetResponse = new GetPlanetsWrapperClass();
 
@@ -88,8 +89,7 @@ public class  StarWarsAPIFlow {
         }
       //************************************************************************************ */
       //GET REALATED PEOPLE ON PLANET >> "RESIDENTS"
-      
-      
+
       if(residentURLList.size()!=0){
       for(String residentURL : residentURLList){
       
@@ -149,14 +149,134 @@ public class  StarWarsAPIFlow {
         String peopleCreated = peopleResponse.created.substringBefore('T')+' '+peopleResponse.created.substring(12, 19);
         newPerson.API_Data_Created__c = Datetime.valueOf(created);
 
+        //GET STARSHIPS RELATED TO THE PEOPLE RECORDS
+        List<String> starshipURLList = peopleResponse.starships;
+        
+
+        if(starshipURLList.size() > 0){
+
+        for(String starshipURL : starshipURLList){
+            Http http3 = new Http();
+      HttpRequest req3 = new HttpRequest();
+      req3.setMethod('GET');
+      req3.setEndpoint(starshipURL);
+      req3.setHeader('Accept', 'application/json;charset=UTF-8');
+
+      //Instantiating the wrapper class for the JSON response from the Star Wars API
+      GetStarshipWrapperClass starshipResponse = new GetStarshipWrapperClass();
+
+      try {
+        HttpResponse response = http.send(req3);
+        if (
+          response.getStatusCode() >= 200 &&
+          response.getStatusCode() <= 300
+        ) {
+          System.debug(response.getBody());
+          starshipResponse = (GetStarshipWrapperClass) (JSON.deserialize(
+            response.getBody(),
+            GetStarshipWrapperClass.class
+          ));
+        }
+      } catch (System.CalloutException e) {
+        System.debug('Callout error: ' + e);
+      }
+
+      Star_Wars_Starship__c newStarship = new Star_Wars_Starship__c();
+      if (starshipResponse.name == null) {
+        newStarship.Name = 'No Data in the API';
+        starshipInsert.add(newStarship);
+      }else{
+      System.debug(starshipResponse.pilots);
+      //Creating new Salesforce record with the Starship data populated
+      newStarship.Name = starshipResponse.name;
+      newStarship.Consumables__c = starshipResponse.consumables;
+      newStarship.Manufacturer__c = starshipResponse.manufacturer;
+      newStarship.Model__c = starshipResponse.model;
+      newStarship.Starship_Class__c = starshipResponse.starship_class;
+      newStarship.URL__c = starshipResponse.url;
+
+      String cost = starshipResponse.cost_in_credits;
+      if (cost.isNumeric() && cost != null) {
+        newStarship.Cost_In_Credits__c = Long.valueOf(cost);
+      } else {
+        newStarship.Cost_In_Credits__c = null;
+      }
+
+      String cargo = starshipResponse.cargo_capacity;
+      if (cargo.isNumeric() && cargo != null) {
+        newStarship.Cargo_Capacity__c = Long.valueOf(cargo);
+      } else {
+        newStarship.Cargo_Capacity__c = null;
+      }
+
+      String crew = starshipResponse.crew;
+      if (crew.isNumeric() && crew != null) {
+        newStarship.Crew__c = Integer.valueOf(crew);
+      } else {
+        newStarship.Crew__c = null;
+      }
+
+      String hyperdrive = starshipResponse.hyperdrive_rating;
+      if (hyperdrive.isNumeric() && hyperdrive != null) {
+        newStarship.Hyperdrive_Rating__c = Double.valueOf(hyperdrive);
+      } else {
+        newStarship.Hyperdrive_Rating__c = null;
+      }
+
+      String mglt = starshipResponse.MGLT;
+      if (mglt.isNumeric() && mglt != null) {
+        newStarship.MGLT__c = Integer.valueOf(mglt);
+      } else {
+        newStarship.MGLT__c = null;
+      }
+
+      String length = starshipResponse.length;
+      if (length.isNumeric() && length != null) {
+        newStarship.Length__c = Double.valueOf(length);
+      } else {
+        newStarship.Length__c = null;
+      }
+
+      String passengers = starshipResponse.passengers;
+      if (passengers.isNumeric() && passengers != null) {
+        newStarship.Passengers__c = Integer.valueOf(passengers);
+      } else {
+        newStarship.Passengers__c = null;
+      }
+
+      String speed = starshipResponse.max_atmosphering_speed;
+      if (speed.isNumeric() && speed != null) {
+        newStarship.Max_Atmosphering_Speed__c = Integer.valueOf(speed);
+      } else {
+        newStarship.Max_Atmosphering_Speed__c = null;
+      }
+
+      String starshipEdited =
+        starshipResponse.edited.substringBefore('T') +
+        ' ' +
+        starshipResponse.edited.substring(12, 19);
+      newStarship.API_Data_Updated__c = Datetime.valueOf(edited);
+
+      String starshipCreated =
+        starshipResponse.created.substringBefore('T') +
+        ' ' +
+        starshipResponse.created.substring(12, 19);
+      newStarship.API_Data_Created__c = Datetime.valueOf(created);
+      starshipInsert.add(newStarship);
+          }
+        }
+        
         }
         peopleList.add(newPerson);
 
       }
     }
   }
+  //********************************************************************************************************* */
+  //GET STARSHIPS RELATED TO THE PEOPLE RECORDS
     insert newPlanet;
     insert peopleList;
+    insert starshipInsert;
 
     Id homeworldId = [SELECT Id, URL__c FROM Star_Wars_Planet__c WHERE URL__c = :newPlanet.URL__c].Id;
     List<Star_Wars_Person__c> updatedResidentList = new List<Star_Wars_Person__c>();
@@ -168,6 +288,7 @@ public class  StarWarsAPIFlow {
 
     update updatedResidentList;
   }
+}
       
         //input details that comes to apex from flow
         public class FlowInputs{
