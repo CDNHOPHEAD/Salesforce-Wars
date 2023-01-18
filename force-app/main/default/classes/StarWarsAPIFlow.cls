@@ -1,5 +1,5 @@
 public class  StarWarsAPIFlow {
-    @InvocableMethod(label='Get Star Wars Records' description='HTTP request to SWAPI.com' category='StarWars')
+    @InvocableMethod(label='Get Star Wars Records' description='HTTP request to SWAPI.com' category='Star Wars API')
     public static void StarWarsAPIFlow(List<FlowInputs> request){
       List<Star_Wars_Person__c> peopleList = new List<Star_Wars_Person__c>();
       List<Star_Wars_Starship__c> starshipInsert = new List<Star_Wars_Starship__c>();
