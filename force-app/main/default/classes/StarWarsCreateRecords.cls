@@ -1,20 +1,19 @@
 /*******************************************************************************************
- * @Name         GetPeopleAPICallout
+ * @Name         StarWarsCreateRecords
  * @Author       Adam Dalton
- * @Date         01/11/2023
+ * @Date         01/19/2023
  * @Group        Star Wars API Project
- * @Description  This class contains the HTTP 'GET' request that will grab the person data from swapi.dev/api and populate the Star_Wars_Person__c custom object in the Salesforce Org
+ * @Description  This class handles the record creation of the Star Wars planets, people and starships custom objects.
  *******************************************************************************************/
 /* MODIFICATION LOG
  * Version          Developer          Date               Description
  *-------------------------------------------------------------------------------------------
- *  1.0              Adam      01/09/2023          Initial Creation
- *  2.0              Adam      01/12/2023         Created a for loop so that the method iterates through all the endpoints in the API and create a new record
+ *  1.0              Adam      01/18/2023          Initial Creation
  *******************************************************************************************/
 public with sharing class StarWarsCreateRecords {
   /**************************************************************************************
-   * @Description  Future method to get Star Wars "Person" data from Open API and then insert a new Star_Wars_Person__c record with the related data
-   * @Param		N/A
+   * @Description  Method that creates a Star Wars Planet record based on the HTTP response from SWAPI
+   * @Param		     GetPlanetsWrapperClass planetResponse - wrapper class for the HHTP reponse for the planet API
    * @Return       Void
    * @Example
    **************************************************************************************/
@@ -78,7 +77,12 @@ public with sharing class StarWarsCreateRecords {
     }
     return newPlanet;
   }
-  //*************************************************************************************************** */
+  /**************************************************************************************
+   * @Description  Method that creates a Star Wars Person record based on the HTTP response from SWAPI
+   * @Param		     GetPeopleWrapperClass peopleResponse - wrapper class for the HHTP reponse for the person API
+   * @Return       Void
+   * @Example
+   **************************************************************************************/
   public static Star_Wars_Person__c createPersonRecord(
     GetPeopleWrapperClass peopleResponse
   ) {
@@ -118,7 +122,12 @@ public with sharing class StarWarsCreateRecords {
 
     return newPerson;
   }
-  //*************************************************************************************************** */
+   /**************************************************************************************
+   * @Description  Method that creates a Star Wars Starship record based on the HTTP response from SWAPI
+   * @Param		     GetStarshipWrapperClass starshipResponse - wrapper class for the HHTP reponse for the starship API
+   * @Return       Void
+   * @Example
+   **************************************************************************************/
   public static Star_Wars_Starship__c createStarshipRecord(
     GetStarshipWrapperClass starshipResponse
   ) {

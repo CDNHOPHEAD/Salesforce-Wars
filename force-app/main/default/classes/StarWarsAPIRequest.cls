@@ -1,4 +1,22 @@
+/*******************************************************************************************
+ * @Name         StarWarsAPIRequest
+ * @Author       Adam Dalton
+ * @Date         01/19/2023
+ * @Group        Star Wars API Project
+ * @Description  This class handles the HTTP callouts for the SWAPI.
+ *******************************************************************************************/
+/* MODIFICATION LOG
+ * Version          Developer          Date               Description
+ *-------------------------------------------------------------------------------------------
+ *  1.0              Adam      01/18/2023          Initial Creation
+ *******************************************************************************************/
 public with sharing class StarWarsAPIRequest {
+  /**************************************************************************************
+   * @Description  Method that sends an HTTP GET request to SWAPI for the planet data
+   * @Param		     String planetURL - passing in the endpoint for the HTTP request
+   * @Return       Void
+   * @Example
+   **************************************************************************************/
   public static GetPlanetsWrapperClass planetAPIRequest(String planetURL) {
     Http http = new Http();
     HttpRequest req = new HttpRequest();
@@ -23,7 +41,12 @@ public with sharing class StarWarsAPIRequest {
         res.getStatus()
     );
   }
-//*********************************************************************************************** */
+  /**************************************************************************************
+   * @Description  Method that sends an HTTP GET request to SWAPI for the people data
+   * @Param		     String residentURL - passing in the endpoint for the HTTP request
+   * @Return       Void
+   * @Example
+   **************************************************************************************/
   public static GetPeopleWrapperClass peopleAPIrequest(String residentURL) {
     Http http = new Http();
     HttpRequest req = new HttpRequest();
@@ -48,7 +71,12 @@ public with sharing class StarWarsAPIRequest {
         res.getStatus()
     );
   }
-  //*********************************************************************************************** */
+    /**************************************************************************************
+   * @Description  Method that sends an HTTP GET request to SWAPI for the starship data
+   * @Param		     String starshipURL - passing in the endpoint for the HTTP request
+   * @Return       Void
+   * @Example
+   **************************************************************************************/
 
   public static GetStarshipWrapperClass starshipAPIrequest(String starshipURL) {
     Http http = new Http();
