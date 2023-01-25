@@ -124,71 +124,71 @@ public with sharing class StarWarsCreateRecords {
   }
    /**************************************************************************************
    * @Description  Method that creates a Star Wars Starship record based on the HTTP response from SWAPI
-   * @Param		     GetStarshipWrapperClass starshipResponse - wrapper class for the HHTP reponse for the starship API
+   * @Param		     GetStarshipWrapperClass starship - wrapper class for the HHTP reponse for the starship API
    * @Return       Void
    * @Example
    **************************************************************************************/
   public static Star_Wars_Starship__c createStarshipRecord(
-    GetStarshipWrapperClass starshipResponse
+    StarshipWrapperv2.Results starship
   ) {
     Star_Wars_Starship__c newStarship = new Star_Wars_Starship__c();
-    newStarship.Name = starshipResponse.name;
-    newStarship.Consumables__c = starshipResponse.consumables;
-    newStarship.Manufacturer__c = starshipResponse.manufacturer;
-    newStarship.Model__c = starshipResponse.model;
-    newStarship.Starship_Class__c = starshipResponse.starship_class;
-    newStarship.URL__c = starshipResponse.url;
+    newStarship.Name = starship.name;
+    newStarship.Consumables__c = starship.consumables;
+    newStarship.Manufacturer__c = starship.manufacturer;
+    newStarship.Model__c = starship.model;
+    newStarship.Starship_Class__c = starship.starship_class;
+    newStarship.URL__c = starship.url;
 
-    String cost = starshipResponse.cost_in_credits;
+    String cost = starship.cost_in_credits;
     if (cost.isNumeric() && cost != null) {
       newStarship.Cost_In_Credits__c = Long.valueOf(cost);
     } else {
       newStarship.Cost_In_Credits__c = null;
     }
 
-    String cargo = starshipResponse.cargo_capacity;
+    String cargo = starship.cargo_capacity;
     if (cargo.isNumeric() && cargo != null) {
       newStarship.Cargo_Capacity__c = Long.valueOf(cargo);
     } else {
       newStarship.Cargo_Capacity__c = null;
     }
 
-    String crew = starshipResponse.crew;
+    String crew = starship.crew;
     if (crew.isNumeric() && crew != null) {
       newStarship.Crew__c = Integer.valueOf(crew);
     } else {
       newStarship.Crew__c = null;
     }
 
-    String hyperdrive = starshipResponse.hyperdrive_rating;
+    String hyperdrive = starship.hyperdrive_rating;
     if (hyperdrive.isNumeric() && hyperdrive != null) {
       newStarship.Hyperdrive_Rating__c = Double.valueOf(hyperdrive);
     } else {
       newStarship.Hyperdrive_Rating__c = null;
     }
 
-    String mglt = starshipResponse.MGLT;
+    String mglt = starship.MGLT;
     if (mglt.isNumeric() && mglt != null) {
       newStarship.MGLT__c = Integer.valueOf(mglt);
     } else {
       newStarship.MGLT__c = null;
     }
 
-    String length = starshipResponse.length;
+    String length = starship.length;
     if (length.isNumeric() && length != null) {
       newStarship.Length__c = Double.valueOf(length);
     } else {
       newStarship.Length__c = null;
     }
 
-    String passengers = starshipResponse.passengers;
+    String passengers = starship.passengers;
     if (passengers.isNumeric() && passengers != null) {
       newStarship.Passengers__c = Integer.valueOf(passengers);
     } else {
       newStarship.Passengers__c = null;
     }
 
-    String speed = starshipResponse.max_atmosphering_speed;
+    String speed = starship.max_atmosphering_speed;
     if (speed.isNumeric() && speed != null) {
       newStarship.Max_Atmosphering_Speed__c = Integer.valueOf(speed);
     } else {
@@ -196,15 +196,15 @@ public with sharing class StarWarsCreateRecords {
     }
 
     String edited =
-      starshipResponse.edited.substringBefore('T') +
+    starship.edited.substringBefore('T') +
       ' ' +
-      starshipResponse.edited.substring(12, 19);
+      starship.edited.substring(12, 19);
     newStarship.API_Data_Updated__c = Datetime.valueOf(edited);
 
     String created =
-      starshipResponse.created.substringBefore('T') +
+    starship.created.substringBefore('T') +
       ' ' +
-      starshipResponse.created.substring(12, 19);
+      starship.created.substring(12, 19);
     newStarship.API_Data_Created__c = Datetime.valueOf(created);
     
     return newStarship;

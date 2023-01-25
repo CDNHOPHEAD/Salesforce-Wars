@@ -6,16 +6,28 @@ global class ScheduledStarshipAPI Implements Schedulable {
     
     @future(callout=true)
     public static void ScheduledStarshipAPI() {
-        List<Star_Wars_Starship__c> starshipList = new List<Star_Wars_Starship__c>();
+        List<Star_Wars_Starship__c> starshipRecords = new List<Star_Wars_Starship__c>();
         
-        for (Integer i = 2; i <= 29; i++) {
-          String starshipURL = 'https://swapi.dev/api/starships/' + i;
-          GetStarshipWrapperClass starshipResponse = StarWarsAPIRequest.starshipAPIrequest(starshipURL);
-          Star_Wars_Starship__c newStarship = StarWarsCreateRecords.createStarshipRecord(starshipResponse);
-          starshipList.add(newStarship);
+        Integer pageNumber = 1;
+        String nextPage = ' ';
 
+        do{
+            String starshipURL = 'https://swapi.dev/api/starships/?page=' + String.valueOf(pageNumber);
+            StarshipWrapperv2 starshipResponse = StarWarsAPIRequest.starshipAPIrequest(starshipURL);
+            List<StarshipWrapperv2.Results> starshipList = starshipResponse.results;
+            nextPage = starshipResponse.next;
+
+            for(StarshipWrapperv2.Results starship:starshipList){
+                Star_Wars_Starship__c newStarship = StarWarsCreateRecords.createStarshipRecord(starship);
+                starshipRecords.add(newStarship);
+            }
+            pageNumber++;
+        }while(nextPage !=null);
+        upsert starshipRecords URL__c;
       }
-        upsert starshipList;
+        
+
+     
 
      /*   List<String> pilotURLS = starshipResponse.pilots;
         Id starshipId = [SELECT Id From Star_Wars_Starship__c WHERE URL__c = :starshipResponse.url LIMIT 1].Id; 
@@ -32,7 +44,7 @@ global class ScheduledStarshipAPI Implements Schedulable {
 
       }
       insert junctionList;*/
-      }
+      
     
 }
 

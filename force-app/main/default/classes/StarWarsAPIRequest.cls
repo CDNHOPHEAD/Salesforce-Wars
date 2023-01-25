@@ -78,7 +78,7 @@ public with sharing class StarWarsAPIRequest {
    * @Example
    **************************************************************************************/
 
-  public static GetStarshipWrapperClass starshipAPIrequest(String starshipURL) {
+  public static StarshipWrapperv2 starshipAPIrequest(String starshipURL) {
     Http http = new Http();
     HttpRequest req = new HttpRequest();
     req.setMethod('GET');
@@ -88,9 +88,9 @@ public with sharing class StarWarsAPIRequest {
     //Instantiating the wrapper class for the JSON response from the Star Wars API
     HttpResponse res = http.send(req);
     if (res.getStatusCode() >= 200 && res.getStatusCode() < 300) {
-        GetStarshipWrapperClass starshipResponse = (GetStarshipWrapperClass) (JSON.deserialize(
+      StarshipWrapperv2 starshipResponse = (StarshipWrapperv2) (JSON.deserialize(
             res.getBody(),
-            GetStarshipWrapperClass.class
+            StarshipWrapperv2.class
           ));
       return starshipResponse;
     }

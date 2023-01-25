@@ -59,7 +59,7 @@ public with sharing class GetStarShipAPICallout {
       newStarship.Manufacturer__c = starshipResponse.manufacturer;
       newStarship.Model__c = starshipResponse.model;
       newStarship.Starship_Class__c = starshipResponse.starship_class;
-      newStarship.URL__c = starshipResponse.url;
+      //newStarship.URL__c = starshipResponse.url;
 
       String cost = starshipResponse.cost_in_credits;
       if (cost.isNumeric() && cost != null) {
