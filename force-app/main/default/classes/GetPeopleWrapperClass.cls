@@ -7,6 +7,8 @@ public with sharing class GetPeopleWrapperClass {
 	public String height;	
 	public String mass;		
 	public String url;
-    public String homeworld;	
-
+    public String homeworld;
+	public String created;
+	public String edited;
+	public List<String> starships;	
 }

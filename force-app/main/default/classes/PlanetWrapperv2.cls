@@ -1,5 +1,11 @@
-public with sharing class GetPlanetsWrapperClass {
-	public String name;	
+public with sharing class PlanetWrapperv2 {
+    public Integer count;
+	public String next;
+	public String previous;
+	public List<Results> results;
+    
+    public class Results {
+    public String name;	
 	public String rotation_period;	
 	public String orbital_period;	
 	public String diameter;	
@@ -12,4 +18,5 @@ public with sharing class GetPlanetsWrapperClass {
 	public List<String> residents;
 	public String created;
 	public String edited;
-	}
+    }
+}

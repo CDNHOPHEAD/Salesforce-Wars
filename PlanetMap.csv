@@ -1,0 +1,62 @@
+﻿Name,Planet_Name__c,Planet_URL__c
+Tatooine,Tatooine,https://swapi.dev/api/planets/1/
+Alderaan,Alderaan,https://swapi.dev/api/planets/2/
+Yavin_IV,Yavin IV,https://swapi.dev/api/planets/3/
+Hoth,Hoth,https://swapi.dev/api/planets/4/
+a00Dn000003zpEX,a00Dn000003zpEX,
+Bespin,Bespin,https://swapi.dev/api/planets/6/
+Endor,Endor,https://swapi.dev/api/planets/7/
+Naboo,Naboo,https://swapi.dev/api/planets/8/
+Coruscant,Coruscant,https://swapi.dev/api/planets/9/
+Kamino,Kamino,https://swapi.dev/api/planets/10/
+Geonosis,Geonosis,https://swapi.dev/api/planets/11/
+Utapau,Utapau,https://swapi.dev/api/planets/12/
+Mustafar,Mustafar,https://swapi.dev/api/planets/13/
+Kashyyyk,Kashyyyk,https://swapi.dev/api/planets/14/
+Polis_Massa,Polis Massa,https://swapi.dev/api/planets/15/
+Mygeeto,Mygeeto,https://swapi.dev/api/planets/16/
+Felucia,Felucia,https://swapi.dev/api/planets/17/
+Cato_Neimoidia,Cato Neimoidia,https://swapi.dev/api/planets/18/
+Saleucami,Saleucami,https://swapi.dev/api/planets/19/
+Stewjon,Stewjon,https://swapi.dev/api/planets/20/
+Eriadu,Eriadu,https://swapi.dev/api/planets/21/
+Corellia,Corellia,https://swapi.dev/api/planets/22/
+Rodia,Rodia,https://swapi.dev/api/planets/23/
+Nal Hutta,Nal Hutta,https://swapi.dev/api/planets/24/
+Dantooine,Dantooine,https://swapi.dev/api/planets/25/
+Bestine_IV,Bestine IV,https://swapi.dev/api/planets/26/
+Ord Mantell,Ord Mantell,https://swapi.dev/api/planets/27/
+unknown,unknown,https://swapi.dev/api/planets/28/
+Trandosha,Trandosha,https://swapi.dev/api/planets/29/
+Socorro,Socorro,https://swapi.dev/api/planets/30/
+Mon Cala,Mon Cala,https://swapi.dev/api/planets/31/
+Chandrila,Chandrila,https://swapi.dev/api/planets/32/
+Sullust,Sullust,https://swapi.dev/api/planets/33/
+Toydaria,Toydaria,https://swapi.dev/api/planets/34/
+Malastare,Malastare,https://swapi.dev/api/planets/35/
+Dathomir,Dathomir,https://swapi.dev/api/planets/36/
+Ryloth,Ryloth,https://swapi.dev/api/planets/37/
+Aleen Minor,Aleen Minor,https://swapi.dev/api/planets/38/
+Vulpter,Vulpter,https://swapi.dev/api/planets/39/
+Troiken,Troiken,https://swapi.dev/api/planets/40/
+Tund,Tund,https://swapi.dev/api/planets/41/
+Haruun_Kal,Haruun Kal,https://swapi.dev/api/planets/42/
+Cerea,Cerea,https://swapi.dev/api/planets/43/
+Glee_Anselm,Glee Anselm,https://swapi.dev/api/planets/44/
+Iridonia,Iridonia,https://swapi.dev/api/planets/45/
+Tholoth,Tholoth,https://swapi.dev/api/planets/46/
+Iktotch,Iktotch,https://swapi.dev/api/planets/47/
+Quermia,Quermia,https://swapi.dev/api/planets/48/
+Dorin,Dorin,https://swapi.dev/api/planets/49/
+Champala,Champala,https://swapi.dev/api/planets/50/
+Mirial,Mirial,https://swapi.dev/api/planets/51/
+Serenno,Serenno,https://swapi.dev/api/planets/52/
+Concord_Dawn,Concord Dawn,https://swapi.dev/api/planets/53/
+Zolan,Zolan,https://swapi.dev/api/planets/54/
+Ojom,Ojom,https://swapi.dev/api/planets/55/
+Skako,Skako,https://swapi.dev/api/planets/56/
+Muunilinst,Muunilinst,https://swapi.dev/api/planets/57/
+Shili,Shili,https://swapi.dev/api/planets/58/
+Kalee,Kalee,https://swapi.dev/api/planets/59/
+Umbara,Umbara,https://swapi.dev/api/planets/60/
+,,
