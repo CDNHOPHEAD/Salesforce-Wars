@@ -17,7 +17,7 @@ public with sharing class StarWarsAPIRequest {
    * @Return       Void
    * @Example
    **************************************************************************************/
-  public static GetPlanetsWrapperClass planetAPIRequest(String planetURL) {
+  public static PlanetWrapperv2 planetAPIRequest(String planetURL) {
     Http http = new Http();
     HttpRequest req = new HttpRequest();
     req.setMethod('GET');
@@ -27,9 +27,9 @@ public with sharing class StarWarsAPIRequest {
     //Instantiating the wrapper class for the JSON response from the Star Wars API
     HttpResponse res = http.send(req);
     if (res.getStatusCode() >= 200 && res.getStatusCode() < 300) {
-        GetPlanetsWrapperClass planetResponse = (GetPlanetsWrapperClass) (JSON.deserialize(
+      PlanetWrapperv2 planetResponse = (PlanetWrapperv2) (JSON.deserialize(
         res.getBody(),
-        GetPlanetsWrapperClass.class
+        PlanetWrapperv2.class
       ));
       return planetResponse;
     }

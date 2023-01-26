@@ -44,7 +44,7 @@ public class  StarWarsAPIFlow {
         newPlanet.Climate__c = planetResponse.climate;
         newPlanet.Gravity__c = planetResponse.gravity;
         newPlanet.Terrain__c = planetResponse.terrain;
-        newPlanet.URL__c = planetResponse.url;
+        //newPlanet.URL__c = planetResponse.url;
         
         String edited = planetResponse.edited.substringBefore('T')+' '+planetResponse.edited.substring(12, 19);
         newPlanet.API_Data_Updated__c = Datetime.valueOf(edited);
@@ -126,7 +126,7 @@ public class  StarWarsAPIFlow {
         newPerson.Eye_Color__c = peopleResponse.eye_color;
         newPerson.Gender__c = peopleResponse.gender;
         newPerson.Hair_Color__c = peopleResponse.hair_color;
-        newPerson.URL__c = peopleResponse.url;
+       // newPerson.URL__c = peopleResponse.url;
         
         
         String mass = peopleResponse.mass;
@@ -193,7 +193,7 @@ public class  StarWarsAPIFlow {
       newStarship.Manufacturer__c = starshipResponse.manufacturer;
       newStarship.Model__c = starshipResponse.model;
       newStarship.Starship_Class__c = starshipResponse.starship_class;
-      newStarship.URL__c = starshipResponse.url;
+      //newStarship.URL__c = starshipResponse.url;
 
       String cost = starshipResponse.cost_in_credits;
       if (cost.isNumeric() && cost != null) {
@@ -278,11 +278,11 @@ public class  StarWarsAPIFlow {
     insert peopleList;
     insert starshipInsert;
 
-    Id homeworldId = [SELECT Id, URL__c FROM Star_Wars_Planet__c WHERE URL__c = :newPlanet.URL__c].Id;
+    //Id homeworldId = [SELECT Id, URL__c FROM Star_Wars_Planet__c WHERE URL__c = :newPlanet.URL__c].Id;
     List<Star_Wars_Person__c> updatedResidentList = new List<Star_Wars_Person__c>();
     
     for(Star_Wars_Person__c resident: peopleList){
-      resident.Homeworld__c = homeworldId;
+      //resident.Homeworld__c = homeworldId;
       updatedResidentList.add(resident);
     }
 

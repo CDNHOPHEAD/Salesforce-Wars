@@ -13,63 +13,63 @@
 public with sharing class StarWarsCreateRecords {
   /**************************************************************************************
    * @Description  Method that creates a Star Wars Planet record based on the HTTP response from SWAPI
-   * @Param		     GetPlanetsWrapperClass planetResponse - wrapper class for the HHTP reponse for the planet API
+   * @Param		     GetPlanetsWrapperClass planet - wrapper class for the HHTP reponse for the planet API
    * @Return       Void
    * @Example
    **************************************************************************************/
   public static Star_Wars_Planet__c createPlanetRecord(
-    GetPlanetsWrapperClass planetResponse
+    PlanetWrapperv2.Results planet
   ) {
     Star_Wars_Planet__c newPlanet = new Star_Wars_Planet__c();
     //Creating new Salesforce record with the data populated
-    newPlanet.Name = planetResponse.name;
-    newPlanet.Climate__c = planetResponse.climate;
-    newPlanet.Gravity__c = planetResponse.gravity;
-    newPlanet.Terrain__c = planetResponse.terrain;
-    newPlanet.URL__c = planetResponse.url;
+    newPlanet.Name = planet.name;
+    newPlanet.Climate__c = planet.climate;
+    newPlanet.Gravity__c = planet.gravity;
+    newPlanet.Terrain__c = planet.terrain;
+    newPlanet.URL__c = planet.url;
 
     String edited =
-      planetResponse.edited.substringBefore('T') +
+      planet.edited.substringBefore('T') +
       ' ' +
-      planetResponse.edited.substring(12, 19);
+      planet.edited.substring(12, 19);
     newPlanet.API_Data_Updated__c = Datetime.valueOf(edited);
     System.debug(newPlanet.API_Data_Updated__c);
 
     String created =
-      planetResponse.created.substringBefore('T') +
+      planet.created.substringBefore('T') +
       ' ' +
-      planetResponse.created.substring(12, 19);
+      planet.created.substring(12, 19);
     newPlanet.API_Data_Created__c = Datetime.valueOf(created);
 
-    String rotationPeriod = planetResponse.rotation_period;
+    String rotationPeriod = planet.rotation_period;
     if (rotationPeriod.isNumeric() && rotationPeriod != null) {
       newPlanet.Rotation_period__c = Integer.valueOf(rotationPeriod);
     } else {
       newPlanet.Rotation_period__c = null;
     }
 
-    String orbitalPeriod = planetResponse.orbital_period;
+    String orbitalPeriod = planet.orbital_period;
     if (orbitalPeriod.isNumeric() && orbitalPeriod != null) {
       newPlanet.Orbital_Period__c = Integer.valueOf(orbitalPeriod);
     } else {
       newPlanet.Orbital_Period__c = null;
     }
 
-    String diameter = planetResponse.diameter;
+    String diameter = planet.diameter;
     if (diameter.isNumeric() && diameter != null) {
       newPlanet.Diameter__c = Integer.valueOf(diameter);
     } else {
       newPlanet.Diameter__c = null;
     }
 
-    String surfaceWater = planetResponse.surface_water;
+    String surfaceWater = planet.surface_water;
     if (surfaceWater.isNumeric() && surfaceWater != null) {
       newPlanet.Surface_Water__c = Integer.valueOf(surfaceWater);
     } else {
       newPlanet.Surface_Water__c = null;
     }
 
-    String population = planetResponse.population;
+    String population = planet.population;
     if (population.isNumeric() && population != null) {
       newPlanet.Population__c = long.valueOf(population);
     } else {
