@@ -84,7 +84,7 @@ public with sharing class StarWarsCreateRecords {
    * @Example
    **************************************************************************************/
   public static Star_Wars_Person__c createPersonRecord(
-    GetPeopleWrapperClass peopleResponse
+    PeopleWrapperv2.Results peopleResponse
   ) {
     Star_Wars_Person__c newPerson = new Star_Wars_Person__c();
     newPerson.Name = peopleResponse.name;

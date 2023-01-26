@@ -47,19 +47,19 @@ public with sharing class StarWarsAPIRequest {
    * @Return       Void
    * @Example
    **************************************************************************************/
-  public static GetPeopleWrapperClass peopleAPIrequest(String residentURL) {
+  public static PeopleWrapperv2 peopleAPIrequest(String personURL) {
     Http http = new Http();
     HttpRequest req = new HttpRequest();
     req.setMethod('GET');
-    req.setEndpoint(residentURL);
+    req.setEndpoint(personURL);
     req.setHeader('Accept', 'application/json;charset=UTF-8');
 
     //Instantiating the wrapper class for the JSON response from the Star Wars API
     HttpResponse res = http.send(req);
     if (res.getStatusCode() >= 200 && res.getStatusCode() < 300) {
-        GetPeopleWrapperClass peopleResponse = (GetPeopleWrapperClass) (JSON.deserialize(
+      PeopleWrapperv2 peopleResponse = (PeopleWrapperv2) (JSON.deserialize(
             res.getBody(),
-            GetPeopleWrapperClass.class
+            PeopleWrapperv2.class
           ));
       return peopleResponse;
     }

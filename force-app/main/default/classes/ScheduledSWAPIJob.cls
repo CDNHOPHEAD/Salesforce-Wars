@@ -52,6 +52,60 @@ global class ScheduledSWAPIJob implements Schedulable {
   }
   //******************************************************************************************** */
   @future(callout=true)
+  public static void ScheduledPersonAPI() {
+    List<Star_Wars_Person__c> personRecords = new List<Star_Wars_Person__c>();
+    Map<String, Star_Wars_Planet__c> planetMap = new Map<String, Star_Wars_Planet__c>();
+    for(Star_Wars_Planet__c planet:[SELECT Id, Name , URL__c FROM Star_Wars_Planet__c LIMIT 100]){
+        planetMap.put(planet.URL__c, planet);
+    }
+    
+    Integer pageNumber = 1;
+    String nextPage;
+
+    do {
+      String personURL =
+        'https://swapi.dev/api/people/?page=' + String.valueOf(pageNumber);
+        PeopleWrapperv2 peopleResponse = StarWarsAPIRequest.peopleAPIrequest(
+        personURL
+      );
+      List<PeopleWrapperv2.Results> personList = peopleResponse.results;
+      nextPage = peopleResponse.next;
+
+      for (PeopleWrapperv2.Results person : personList) {
+        Star_Wars_Person__c newPerson = StarWarsCreateRecords.createPersonRecord(
+          person
+        );
+        String homeWorldURL = person.homeworld;
+        Star_Wars_Planet__c homeWorld= planetMap.get(homeWorldURL);
+        newPerson.Homeworld__c = homeWorld.Id;
+        
+        personRecords.add(newPerson);
+      }
+      pageNumber++;
+    } while (nextPage != null);
+
+    Database.UpsertResult[] results = Database.upsert(
+        personRecords,
+      Star_Wars_Person__c.URL__c.getDescribe().getSObjectField(),
+      false
+    );
+
+    for (Integer i = 0; i < results.size(); i++) {
+      if (!results.get(i).isSuccess()) {
+        Database.Error err = results.get(i).getErrors().get(0);
+        System.debug(
+          'Error - ' +
+            err.getMessage() +
+            '\nStatus Code : ' +
+            err.getStatusCode() +
+            '\n Fields : ' +
+            err.getFields()
+        );
+      }
+    }
+  }
+  //******************************************************************************************** */
+  @future(callout=true)
   public static void ScheduledStarshipAPI() {
     List<Star_Wars_Starship__c> starshipRecords = new List<Star_Wars_Starship__c>();
 
