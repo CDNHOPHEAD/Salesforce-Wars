@@ -1,25 +1,38 @@
+/*******************************************************************************************
+ * @Name         ScheduledSWAPIJob
+ * @Author       Adam Dalton
+ * @Date         01/25/2023
+ * @Group        Star Wars API Project
+ * @Description  This scheduled apex class contains all of the logic that calls on two other classes that make the HTTP callouts and create the SF records
+ *******************************************************************************************/
+/* MODIFICATION LOG
+ * Version          Developer          Date               Description
+ *-------------------------------------------------------------------------------------------
+ *  1.0              Adam      01/25/2023          Initial Creation
+ *******************************************************************************************/
 global class ScheduledSWAPIJob implements Schedulable {
   global void execute(SchedulableContext sc) {
     ScheduledPlanetAPI();
-    //ScheduledPeopleAPI();
+    ScheduledPersonAPI();
     ScheduledStarshipAPI();
   }
-  //******************************************************************************************** */
+  /**************************************************************************************
+   * @Description  Method that is being used to make the GET request to SWAPI and create the assocaited Star Wars Planet record in Salesforce
+   * @Param		     N/A
+   * @Return       Void
+   * @Example
+   **************************************************************************************/
   @future(callout=true)
   public static void ScheduledPlanetAPI() {
     List<Star_Wars_Planet__c> planetRecords = new List<Star_Wars_Planet__c>();
+    String planetURL = 'https://swapi.dev/api/planets/?page=1';
 
-    Integer pageNumber = 1;
-    String nextPage;
-
-    do {
-      String planetURL =
-        'https://swapi.dev/api/planets/?page=' + String.valueOf(pageNumber);
+    while (planetURL != null) {
       PlanetWrapperv2 planetResponse = StarWarsAPIRequest.planetAPIrequest(
         planetURL
       );
       List<PlanetWrapperv2.Results> planetList = planetResponse.results;
-      nextPage = planetResponse.next;
+      planetURL = planetResponse.next;
 
       for (PlanetWrapperv2.Results planet : planetList) {
         Star_Wars_Planet__c newPlanet = StarWarsCreateRecords.createPlanetRecord(
@@ -27,8 +40,7 @@ global class ScheduledSWAPIJob implements Schedulable {
         );
         planetRecords.add(newPlanet);
       }
-      pageNumber++;
-    } while (nextPage != null);
+    }
 
     Database.UpsertResult[] results = Database.upsert(
       planetRecords,
@@ -50,42 +62,46 @@ global class ScheduledSWAPIJob implements Schedulable {
       }
     }
   }
-  //******************************************************************************************** */
+  /**************************************************************************************
+   * @Description  Method that is being used to make the GET request to SWAPI and create the assocaited Star Wars Person record in Salesforce while creating the relationship field "Homeworld" between this record and the associated planet record
+   * @Param		     N/A
+   * @Return       Void
+   * @Example
+   **************************************************************************************/
   @future(callout=true)
   public static void ScheduledPersonAPI() {
     List<Star_Wars_Person__c> personRecords = new List<Star_Wars_Person__c>();
     Map<String, Star_Wars_Planet__c> planetMap = new Map<String, Star_Wars_Planet__c>();
-    for(Star_Wars_Planet__c planet:[SELECT Id, Name , URL__c FROM Star_Wars_Planet__c LIMIT 100]){
-        planetMap.put(planet.URL__c, planet);
+    for (Star_Wars_Planet__c planet : [
+      SELECT Id, Name, URL__c
+      FROM Star_Wars_Planet__c
+      LIMIT 100
+    ]) {
+      planetMap.put(planet.URL__c, planet);
     }
-    
-    Integer pageNumber = 1;
-    String nextPage;
+    String personURL = 'https://swapi.dev/api/people/?page=1';
 
-    do {
-      String personURL =
-        'https://swapi.dev/api/people/?page=' + String.valueOf(pageNumber);
-        PeopleWrapperv2 peopleResponse = StarWarsAPIRequest.peopleAPIrequest(
+    while (personURL != null) {
+      PeopleWrapperv2 peopleResponse = StarWarsAPIRequest.peopleAPIrequest(
         personURL
       );
       List<PeopleWrapperv2.Results> personList = peopleResponse.results;
-      nextPage = peopleResponse.next;
+      personURL = peopleResponse.next;
 
       for (PeopleWrapperv2.Results person : personList) {
         Star_Wars_Person__c newPerson = StarWarsCreateRecords.createPersonRecord(
           person
         );
         String homeWorldURL = person.homeworld;
-        Star_Wars_Planet__c homeWorld= planetMap.get(homeWorldURL);
+        Star_Wars_Planet__c homeWorld = planetMap.get(homeWorldURL);
         newPerson.Homeworld__c = homeWorld.Id;
-        
+
         personRecords.add(newPerson);
       }
-      pageNumber++;
-    } while (nextPage != null);
+    }
 
     Database.UpsertResult[] results = Database.upsert(
-        personRecords,
+      personRecords,
       Star_Wars_Person__c.URL__c.getDescribe().getSObjectField(),
       false
     );
@@ -104,22 +120,23 @@ global class ScheduledSWAPIJob implements Schedulable {
       }
     }
   }
-  //******************************************************************************************** */
+  /**************************************************************************************
+   * @Description  Method that is being used to make the GET request to SWAPI and create the assocaited Star Wars Starship record in Salesforce
+   * @Param		     N/A
+   * @Return       Void
+   * @Example
+   **************************************************************************************/
   @future(callout=true)
   public static void ScheduledStarshipAPI() {
     List<Star_Wars_Starship__c> starshipRecords = new List<Star_Wars_Starship__c>();
+    String starshipURL = 'https://swapi.dev/api/starships/?page=1';
 
-    Integer pageNumber = 1;
-    String nextPage = ' ';
-
-    do {
-      String starshipURL =
-        'https://swapi.dev/api/starships/?page=' + String.valueOf(pageNumber);
+    while (starshipURL != null) {
       StarshipWrapperv2 starshipResponse = StarWarsAPIRequest.starshipAPIrequest(
         starshipURL
       );
       List<StarshipWrapperv2.Results> starshipList = starshipResponse.results;
-      nextPage = starshipResponse.next;
+      starshipURL = starshipResponse.next;
 
       for (StarshipWrapperv2.Results starship : starshipList) {
         Star_Wars_Starship__c newStarship = StarWarsCreateRecords.createStarshipRecord(
@@ -127,8 +144,7 @@ global class ScheduledSWAPIJob implements Schedulable {
         );
         starshipRecords.add(newStarship);
       }
-      pageNumber++;
-    } while (nextPage != null);
+    }
 
     Database.UpsertResult[] results = Database.upsert(
       starshipRecords,
